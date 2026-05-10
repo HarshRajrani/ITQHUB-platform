@@ -4,6 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
+
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -14,6 +15,10 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: process.env.PORT || 5173,
+
+    allowedHosts: [
+      "itqhub-platform.onrender.com",
+    ],
 
     proxy: {
       "/api": {
@@ -26,5 +31,8 @@ export default defineConfig({
   preview: {
     host: "0.0.0.0",
     port: process.env.PORT || 4173,
+    allowedHosts: [
+      "itqhub-platform.onrender.com",
+    ],
   },
 });
