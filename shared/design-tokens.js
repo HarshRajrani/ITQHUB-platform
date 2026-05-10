@@ -1,68 +1,90 @@
 /**
- * ITQHUB — Obsidian Dark Design Tokens
+ * ITQHUB — Sheryians-Premium Design Tokens
  *
- * Single source of truth for all design values.
- * Consumed by:  client/tailwind.config.js
- *               client/src/lib/motion.js
- *               server (email templates, etc.)
+ * Deep Obsidian base. ITQHUB Blue accents. Live Red pulses.
+ * Geist Sans / Geist Mono. Glassmorphism material.
  */
 
 const colors = {
-  obsidian: {
-    DEFAULT: "#0B0F19",
-    light: "#121829",
-    lighter: "#1A2138",
+  surface: {
+    DEFAULT: "#030712",          // Deep Obsidian
+    raised: "#0A0F1A",           // Card bg — slightly lifted
+    overlay: "#111827",          // Modals / overlays
+    muted: "#060B14",            // Alternate sections
+    glass: "rgba(3, 7, 18, 0.6)", // Glassmorphism fill
   },
-  slate: {
-    border: "#2A3250",
-  },
-  brand: {
-    cyan: "#00E5FF",
-    purple: "#7C3AED",
-    pink: "#F472B6",
+  border: {
+    DEFAULT: "rgba(255, 255, 255, 0.06)",
+    strong: "rgba(255, 255, 255, 0.10)",
+    hover: "#2563EB",            // ITQHUB Blue on hover
+    glass: "rgba(255, 255, 255, 0.10)", // Glass border
   },
   text: {
-    primary: "#F1F5F9",
-    secondary: "#94A3B8",
-    tertiary: "#64748B",
+    primary: "#FFFFFF",
+    secondary: "#94A3B8",        // Slate-400 — softer grey
+    muted: "#475569",            // Slate-600
+  },
+  accent: {
+    DEFAULT: "#2563EB",          // ITQHUB Blue
+    light: "#60A5FA",            // Blue-400
+    dark: "#1D4ED8",             // Blue-700
+    muted: "rgba(37, 99, 235, 0.10)",
+    glow: "rgba(37, 99, 235, 0.08)",
+  },
+  live: {
+    DEFAULT: "#EF4444",          // Live Red
+    light: "#F87171",
+    pulse: "rgba(239, 68, 68, 0.15)",
+  },
+  warm: {
+    DEFAULT: "#F59E0B",
+    light: "#FBBF24",
   },
   status: {
-    success: "#34D399",
-    warning: "#FBBF24",
-    error: "#F87171",
+    success: "#22C55E",
+    warning: "#F59E0B",
+    error: "#EF4444",
   },
 };
 
 const typography = {
   fontFamily: {
-    sans: ['"Inter"', "sans-serif"],
-    heading: ['"Outfit"', "sans-serif"],
+    sans: ['"Geist Sans"', '"Inter"', "system-ui", "sans-serif"],
+    heading: ['"Geist Sans"', '"Inter"', "system-ui", "sans-serif"],
+    mono: ['"Geist Mono"', '"JetBrains Mono"', "monospace"],
   },
   fontSize: {
     xs: ["0.75rem", { lineHeight: "1rem" }],
     sm: ["0.875rem", { lineHeight: "1.25rem" }],
-    base: ["1rem", { lineHeight: "1.5rem" }],
-    lg: ["1.25rem", { lineHeight: "1.75rem" }],
-    xl: ["1.563rem", { lineHeight: "2rem" }],
-    "2xl": ["1.953rem", { lineHeight: "2.25rem" }],
-    "3xl": ["2.441rem", { lineHeight: "2.75rem" }],
-    "4xl": ["3.052rem", { lineHeight: "3.25rem" }],
+    base: ["1rem", { lineHeight: "1.6" }],
+    lg: ["1.125rem", { lineHeight: "1.75rem" }],
+    xl: ["1.25rem", { lineHeight: "1.75rem" }],
+    "2xl": ["1.5rem", { lineHeight: "2rem" }],
+    "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
+    "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+    "5xl": ["3rem", { lineHeight: "1.1" }],
+    "6xl": ["3.75rem", { lineHeight: "1.05" }],
+    "7xl": ["4.5rem", { lineHeight: "1" }],
   },
 };
 
 const shape = {
   borderRadius: {
-    sm: "6px",
-    DEFAULT: "8px",
-    md: "10px",
+    sm: "4px",
+    DEFAULT: "6px",
+    md: "8px",
     lg: "12px",
     xl: "16px",
+    "2xl": "20px",
     full: "9999px",
   },
   boxShadow: {
-    card: "0 4px 24px rgba(0, 0, 0, 0.4)",
-    glow: "0 0 20px rgba(0, 229, 255, 0.15)",
-    "glow-purple": "0 0 20px rgba(124, 58, 237, 0.15)",
+    subtle: "0 1px 2px rgba(0, 0, 0, 0.8)",
+    card: "inset 0 1px 0 rgba(255,255,255,0.04)",
+    elevated: "0 8px 32px rgba(0, 0, 0, 0.8)",
+    "inner-glow": "inset 0 0 60px rgba(37, 99, 235, 0.04)",
+    glow: "0 0 1px rgba(37, 99, 235, 0.5)",
+    "glass": "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
   },
 };
 

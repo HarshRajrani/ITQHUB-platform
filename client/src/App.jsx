@@ -1,126 +1,110 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { ToastProvider } from "./components/Toast";
 
-/* ── Animated Loading Screen ──────────────────────── */
+import MainLayout from "./layouts/MainLayout";
+import Home from "./pages/Home";
+import CourseDetail from "./pages/CourseDetail";
+import ContactPage from "./pages/ContactPage";
+import Logo from "./components/Logo";
+import ScrollToTop from "./components/ScrollToTop";
+
+// Lazy Load pages for performance
+const CoursesPage = lazy(() => import("./pages/CoursesPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+import AboutPage from "./pages/AboutPage";
+
+/* ── Loading Screen ───────────────────────────────── */
 function LoadingScreen({ onFinish }) {
   useEffect(() => {
-    const timer = setTimeout(onFinish, 2800);
+    const timer = setTimeout(onFinish, 2000);
     return () => clearTimeout(timer);
   }, [onFinish]);
 
   return (
     <motion.div
       key="loader"
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-obsidian"
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
+      style={{ background: "#030712" }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ duration: 0.3 }}
     >
-      {/* Glow ring */}
       <motion.div
-        className="relative flex items-center justify-center"
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="flex flex-col items-center"
       >
-        {/* Outer spinning ring */}
-        <motion.div
-          className="absolute h-28 w-28 rounded-full border-2 border-transparent"
-          style={{
-            borderTopColor: "#00E5FF",
-            borderRightColor: "#7C3AED",
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-        />
-
-        {/* Inner pulsing dot */}
-        <motion.div
-          className="h-4 w-4 rounded-full bg-brand-cyan"
-          animate={{
-            scale: [1, 1.6, 1],
-            boxShadow: [
-              "0 0 0px rgba(0,229,255,0.4)",
-              "0 0 30px rgba(0,229,255,0.6)",
-              "0 0 0px rgba(0,229,255,0.4)",
-            ],
-          }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-        />
+        <Logo />
+        <div className="mt-6 h-[1px] w-20 overflow-hidden bg-white/[0.06]">
+          <motion.div
+            className="h-full bg-white/40"
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 1.6, ease: "easeInOut" }}
+          />
+        </div>
       </motion.div>
-
-      {/* Brand name */}
-      <motion.h1
-        className="mt-10 font-heading text-3xl font-bold tracking-wider"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <span className="bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-pink bg-clip-text text-transparent">
-          ITQHUB
-        </span>
-      </motion.h1>
-
-      {/* Tagline */}
-      <motion.p
-        className="mt-3 text-sm text-text-secondary"
-        initial={{ y: 10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.5 }}
-      >
-        Initializing experience…
-      </motion.p>
     </motion.div>
   );
 }
 
-/* ── Main App Shell ───────────────────────────────── */
+/* ── Page Loader ─────────────────────────────────── */
+function PageLoader() {
+  return (
+    <div className="flex h-screen w-full items-center justify-center bg-[#030712]">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-white/10 border-t-blue-500" />
+    </div>
+  );
+}
+
+/* ── Animated Routes Wrapper ──────────────────────── */
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Suspense fallback={<PageLoader />}>
+        <Routes location={location} key={location.pathname}>
+          {/* Public Routes */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/programs" element={<CoursesPage />} />
+            <Route path="/course/:id" element={<CourseDetail />} />
+            <Route path="/contact" element={<ContactPage />} />
+          </Route>
+          
+          {/* Admin Routes */}
+          <Route path="/itq-admin-portal" element={<AdminPage />} />
+        </Routes>
+      </Suspense>
+    </AnimatePresence>
+  );
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true);
 
   return (
-    <>
-      <AnimatePresence mode="wait">
-        {loading && <LoadingScreen onFinish={() => setLoading(false)} />}
-      </AnimatePresence>
+    <ToastProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <AnimatePresence mode="wait">
+          {loading && <LoadingScreen onFinish={() => setLoading(false)} />}
+        </AnimatePresence>
 
-      {!loading && (
-        <motion.main
-          className="flex min-h-screen flex-col items-center justify-center bg-obsidian px-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {/* Hero */}
-          <h1 className="font-heading text-5xl font-extrabold tracking-tight md:text-7xl">
-            <span className="bg-gradient-to-r from-brand-cyan to-brand-purple bg-clip-text text-transparent">
-              ITQHUB
-            </span>
-          </h1>
-
-          <p className="mt-4 max-w-md text-center text-lg text-text-secondary">
-            The future of tech is loading. Stay tuned.
-          </p>
-
-          {/* Accent bar */}
+        {!loading && (
           <motion.div
-            className="mt-8 h-1 w-24 rounded-full bg-gradient-to-r from-brand-cyan via-brand-purple to-brand-pink"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          />
-
-          {/* Status badge */}
-          <div className="mt-10 flex items-center gap-2 rounded-full border border-slate-border bg-obsidian-light px-4 py-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-status-success opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-status-success" />
-            </span>
-            <span className="text-xs text-text-secondary">
-              Systems operational
-            </span>
-          </div>
-        </motion.main>
-      )}
-    </>
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            <AnimatedRoutes />
+          </motion.div>
+        )}
+      </BrowserRouter>
+    </ToastProvider>
   );
 }

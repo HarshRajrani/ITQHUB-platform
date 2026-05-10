@@ -15,6 +15,9 @@
     "build": "npm run build --workspace=client",
     "start": "npm run start --workspace=server"
   },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
   "keywords": ["itqhub", "mern", "monorepo"],
   "author": "Karan",
   "license": "MIT"

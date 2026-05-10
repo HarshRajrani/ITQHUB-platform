@@ -1,0 +1,21 @@
+{
+  "name": "ITQHUB | Master the Craft",
+  "short_name": "ITQHUB",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#2563EB",
+  "description": "Industry-led software programs with 100% placement support.",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+
+/**
+ * MagneticButton — follows the cursor slightly when hovered.
+ * Props: children, className, onClick
+ */
+export default function MagneticButton({ children, className = "", onClick }) {
+  const ref = useRef(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const x = (e.clientX - left - width / 2) * 0.3;
+    const y = (e.clientY - top - height / 2) * 0.3;
+    setPosition({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 });
+  };
+
+  return (
+    <motion.button
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      onClick={onClick}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 200, damping: 15, mass: 0.5 }}
+      className={className}
+    >
+      {children}
+    </motion.button>
+  );
+}
