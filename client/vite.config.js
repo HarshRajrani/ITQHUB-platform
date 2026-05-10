@@ -10,13 +10,21 @@ export default defineConfig({
       "@shared": path.resolve(__dirname, "../shared"),
     },
   },
+
   server: {
-    port: 5173,
+    host: "0.0.0.0",
+    port: process.env.PORT || 5173,
+
     proxy: {
       "/api": {
         target: "https://itqhub-platform-backend.onrender.com",
         changeOrigin: true,
       },
     },
+  },
+
+  preview: {
+    host: "0.0.0.0",
+    port: process.env.PORT || 4173,
   },
 });
